@@ -41,9 +41,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dao.cs" />
+    <Compile Include="Ketchup.cs" />
+    <Compile Include="Producer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{a7a8a176-58d2-4ab6-af55-fd2ee251580c}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Interfaces\Interfaces.csproj">
       <Project>{eb44f606-1b9b-423c-8496-180f81565c1f}</Project>
       <Name>Interfaces</Name>

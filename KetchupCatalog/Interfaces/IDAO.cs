@@ -6,5 +6,14 @@ namespace Gorny.KetchupCatalog.Interfaces
     {
         IEnumerable<IProducer> GetProducers();
         IEnumerable<IKetchup> GetKetchups();
+
+        IKetchup AddKetchup();
+        IProducer AddProducer();
+
+        void SaveKetchup(IKetchup ketchup);
+        void SaveKetchup(IKetchup ketchup, int index);
+
+        void SaveProducer(IProducer producer);
+        void SaveProducer(IProducer producer, int index);
     }
 }

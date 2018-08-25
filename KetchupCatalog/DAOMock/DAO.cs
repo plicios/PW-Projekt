@@ -29,10 +29,40 @@ namespace Gorny.KetchupCatalog.DAOMock
         {
             return _ketchups;
         }
-
+    
         public IEnumerable<IProducer> GetProducers()
         {
             return _producers;
+        }
+
+        public IKetchup AddKetchup()
+        {
+            return new Ketchup {Name = "", ManufactureDate = DateTime.Now};
+        }
+
+        public IProducer AddProducer()
+        {
+            return new Producer { Name = ""};
+        }
+
+        public void SaveKetchup(IKetchup ketchup)
+        {
+            _ketchups.Add(ketchup);
+        }
+
+        public void SaveKetchup(IKetchup ketchup, int index)
+        {
+            _ketchups[index] = ketchup;
+        }
+
+        public void SaveProducer(IProducer producer)
+        {
+            _producers.Add(producer);
+        }
+
+        public void SaveProducer(IProducer producer, int index)
+        {
+            _producers[index] = producer;
         }
     }
 }
