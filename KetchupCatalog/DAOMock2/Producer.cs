@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Gorny.KetchupCatalog.Interfaces;
+﻿using Gorny.KetchupCatalog.Interfaces;
 
 namespace Gorny.KetchupCatalog.DAOMock2
 {
