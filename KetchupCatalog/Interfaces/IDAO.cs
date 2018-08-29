@@ -10,10 +10,7 @@ namespace Gorny.KetchupCatalog.Interfaces
         IKetchup AddKetchup();
         IProducer AddProducer();
 
-        void SaveKetchup(IKetchup ketchup);
-        void SaveKetchup(IKetchup ketchup, int index);
-
-        void SaveProducer(IProducer producer);
-        void SaveProducer(IProducer producer, int index);
+        void SaveKetchup(IKetchup ketchup, int? index);
+        void SaveProducer(IProducer producer, int? index);
     }
 }

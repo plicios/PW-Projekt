@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
+using Gorny.KetchupCatalog.BLC;
+using Gorny.KetchupCatalog.KetchupCatalogUI.Properties;
 
 namespace KetchupCatalogUI
 {
@@ -13,5 +9,11 @@ namespace KetchupCatalogUI
     /// </summary>
     public partial class App : Application
     {
+        public DataProvider DataProvider { get; }
+
+        public App()
+        {
+            DataProvider = new DataProvider(new Settings().Dao);
+        }
     }
 }

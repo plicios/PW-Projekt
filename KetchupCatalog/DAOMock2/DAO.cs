@@ -45,24 +45,28 @@ namespace Gorny.KetchupCatalog.DAOMock2
             return new Producer { Name = "" };
         }
 
-        public void SaveKetchup(IKetchup ketchup)
+        public void SaveKetchup(IKetchup ketchup, int? index)
         {
-            _ketchups.Add(ketchup);
+            if (index.HasValue)
+            {
+                _ketchups[index.Value] = ketchup;
+            }
+            else
+            {
+                _ketchups.Add(ketchup);
+            }
         }
 
-        public void SaveKetchup(IKetchup ketchup, int index)
+        public void SaveProducer(IProducer producer, int? index)
         {
-            _ketchups[index] = ketchup;
-        }
-
-        public void SaveProducer(IProducer producer)
-        {
-            _producers.Add(producer);
-        }
-
-        public void SaveProducer(IProducer producer, int index)
-        {
-            _producers[index] = producer;
+            if (index.HasValue)
+            {
+                _producers[index.Value] = producer;
+            }
+            else
+            {
+                _producers.Add(producer);
+            }
         }
     }
 }

@@ -4,9 +4,121 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KetchupCatalogUI"
+        xmlns:viewModels="clr-namespace:Gorny.KetchupCatalog.KetchupCatalogUI.ViewModels"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:StyleAlias="clr-namespace:Gorny.KetchupCatalog.Core;assembly=Core"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+    <Window.Resources>
+        <ObjectDataProvider x:Key="KetchupTypeEnumData" MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="StyleAlias:KetchupType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <Style x:Key="TextBoxWithErrors">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <DockPanel LastChildFill="True">
+                            <ListBox DockPanel.Dock="Bottom" ItemsSource="{Binding ElementName=ErrorComponent, Path=AdornedElement.(Validation.Errors)}" DisplayMemberPath="ErrorContent" />
+                            <Grid DockPanel.Dock="Left">
+                                <Ellipse Width="20" Height="20" Stroke="DarkRed" Fill="DarkRed"></Ellipse>
+                                <Label Content="{Binding ElementName=ErrorComponent, Path=AdornedElement.(Validation.Errors).Count }" Foreground="White" ></Label>
+                            </Grid>
+                            <Border BorderBrush="DarkRed" BorderThickness="2">
+                                <AdornedElementPlaceholder Name="ErrorComponent"/>
+                            </Border>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Control.MinWidth" Value="150" />
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="Control.Margin" Value="20 2 2 50" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <TabControl>
+        <TabItem Header="Ketchups">
+            <TabItem.DataContext>
+                <viewModels:KetchupListViewModel/>
+            </TabItem.DataContext>
+            <DockPanel LastChildFill="True">
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Command="{Binding FilterKetchupCommand}" MinWidth="100" >Filter</Button>
+                    <TextBox MinWidth="100" Text="{Binding FilterValue}" ></TextBox>
+                    <Button Command="{Binding ClearFilterKetchupCommand}" MinWidth="120" >Clear filter</Button>
+                    <Button Command="{Binding AddNewKetchupCommand}" MinWidth="120" >Add new Ketchup</Button>
+                    <Button Command="{Binding SaveKetchupCommand}" MinWidth="100" >Save Ketchup</Button>
+                </StackPanel>
+                <ListBox MinWidth="220" DockPanel.Dock="Left" Name="PiwoListPanel" ItemsSource="{Binding Ketchups }" DisplayMemberPath="Name" SelectedItem="{Binding SelectedKetchup}" >
+                </ListBox>
+                <Grid Name="BeerDetailsList" DataContext="{Binding SelectedKetchup }">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0">Name:</Label>
+                        <TextBox Style="{StaticResource TextBoxWithErrors }" Grid.Row="0" Grid.Column="1" MinWidth="150" Text="{Binding Name}"/>
+                        <Label Grid.Row="1">Manufacture date:</Label>
+                        <TextBox Style="{StaticResource TextBoxWithErrors }" Grid.Row="1" Grid.Column="1" MinWidth="150" Text="{Binding ManufactureDate}"/>
+                        <Label Grid.Row="2">Producer:</Label>
+                        <ComboBox Style="{StaticResource TextBoxWithErrors }" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Producers}" DisplayMemberPath="Name" SelectedItem="{Binding Producer}" />
+                        <Label Grid.Row="3">Ketchup type</Label>
+                        <ComboBox Style="{StaticResource TextBoxWithErrors }" Grid.Row="3" Grid.Column="1" ItemsSource="{Binding Source={StaticResource KetchupTypeEnumData}}" SelectedItem="{Binding Type}" />
+                    </Grid>
+                </Grid>
+            </DockPanel>
+        </TabItem>
+        <TabItem Header="Producers">
+            <TabItem.DataContext>
+                <viewModels:ProducerListViewModel />
+            </TabItem.DataContext>
+            <DockPanel LastChildFill="True">
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Command="{Binding FilterProducerCommand}" MinWidth="100">Filter</Button>
+                    <TextBox MinWidth="100" Text="{Binding FilterValue}" ></TextBox>
+                    <Button Command="{Binding ClearFilterProducerCommand}" MinWidth="120">Clear filter</Button>
+                    <Button Command="{Binding AddNewProducerCommand}" MinWidth="120" >Add new Producer</Button>
+                    <Button Command="{Binding SaveProducerCommand}" MinWidth="100" >Save Producer</Button>
+                </StackPanel>
+                <ListBox MinWidth="220" DockPanel.Dock="Left" Name="ProducerListPanel" ItemsSource="{Binding Producers}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedProducer}" >
+                </ListBox>
+                <Grid Name="ProdDetailsList" DataContext="{Binding SelectedProducer }">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0">Name:</Label>
+                        <TextBox Style="{StaticResource TextBoxWithErrors }" Grid.Row="0" Grid.Column="1" MinWidth="150" Text="{Binding Name}"/>
+                    </Grid>
+                </Grid>
+            </DockPanel>
+        </TabItem>
+    </TabControl>
+
 </Window>

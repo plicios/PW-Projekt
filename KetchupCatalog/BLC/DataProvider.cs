@@ -24,5 +24,26 @@ namespace Gorny.KetchupCatalog.BLC
 
             _dao = Activator.CreateInstance(daoType) as IDao;
         }
+
+        public IKetchup AddKetchup()
+        {
+            return _dao.AddKetchup();
+        }
+
+
+        public void SaveKetchup(IKetchup ketchup, int? index = null)
+        {
+            _dao.SaveKetchup(ketchup, index);
+        }
+
+        public IProducer AddProducer()
+        {
+            return _dao.AddProducer();
+        }
+
+        public void SaveProducer(IProducer producer, int? index = null)
+        {
+            _dao.SaveProducer(producer, index);
+        }
     }
 }
