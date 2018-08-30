@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Data;
 using Gorny.KetchupCatalog.Interfaces;
-using Gorny.KetchupCatalog.KetchupCatalogUI.Annotations;
 using KetchupCatalogUI;
 
 namespace Gorny.KetchupCatalog.KetchupCatalogUI.ViewModels
 {
-    class ProducerListViewModel : INotifyPropertyChanged
+    class ProducerListViewModel : ViewModel
     {
+        public EventList<ProducerViewModel> AllProducers { get; set; }
         public ObservableCollection<ProducerViewModel> Producers { get; set; }
 
         private ProducerViewModel _producerViewModel;
@@ -28,81 +25,91 @@ namespace Gorny.KetchupCatalog.KetchupCatalogUI.ViewModels
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public Command SaveProducerCommand => new Command(param => SaveProducer(), _ => CanSaveProducer());
 
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        public Command AddNewProducerCommand => new Command(param => AddProducer());
 
-        public Command SaveProducerCommand => new Command(param => SaveKetchup());
-
-        public Command AddNewProducerCommand => new Command(param => AddKetchup());
-
-        public Command FilterProducerCommand => new Command(param => FilterKetchup());
+        public Command FilterProducerCommand => new Command(param => FilterProducer());
 
         public Command ClearFilterProducerCommand => new Command(param => ClearFilter());
 
+        public Command DeleteProducerCommand => new Command(param => DeleteProducer());
+
         public string FilterValue { get; set; }
 
-        private readonly ListCollectionView _producerListCollectionView;
 
         public ProducerListViewModel()
         {
             LoadProducers();
 
             SelectedProducer = Producers.First();
-            _producerListCollectionView = (ListCollectionView)CollectionViewSource.GetDefaultView(Producers);
         }
 
         private void LoadProducers()
         {
-            Producers = new ObservableCollection<ProducerViewModel>();
+            AllProducers = new EventList<ProducerViewModel>();
+            AllProducers.ItemsChangedEvent += AllProducers_ItemsChangedEvent;
             foreach (IProducer producer in (Application.Current as App)?.DataProvider.Producers ?? new List<IProducer>())
             {
-                Producers.Add(new ProducerViewModel(producer));
+                AllProducers.Add(new ProducerViewModel(producer));
             }
-
-            OnPropertyChanged(nameof(Producers));
         }
 
-        private void SaveKetchup()
+        private void AllProducers_ItemsChangedEvent(object sender, EventArgs e)
         {
-            (Application.Current as App)?.DataProvider.SaveProducer(SelectedProducer.Producer);
-            if (!Producers.Contains(SelectedProducer))
-            {
-                Producers.Add(SelectedProducer);
-            }
-
+            Producers = new ObservableCollection<ProducerViewModel>(AllProducers);
             OnPropertyChanged(nameof(Producers));
         }
 
-        private void AddKetchup()
+        private void SaveProducer()
+        {
+            //TODO refresh current SelectedKetchup
+            (Application.Current as App)?.DataProvider.SaveProducer(SelectedProducer.Producer);
+            if (!AllProducers.Contains(SelectedProducer))
+            {
+                AllProducers.Add(SelectedProducer);
+            }
+        }
+
+        private bool CanSaveProducer()
+        {
+            return !SelectedProducer?.HasErrors ?? false;
+        }
+
+        private void AddProducer()
         {
             IProducer producer = (Application.Current as App)?.DataProvider.AddProducer();
             SelectedProducer = new ProducerViewModel(producer);
-            OnPropertyChanged(nameof(Producers));
+        }
+
+        private void DeleteProducer()
+        {
+            IProducer producer = SelectedProducer.Producer;
+            if (AllProducers.Contains(SelectedProducer))
+            {
+                AllProducers.Remove(SelectedProducer);
+            }
+            (Application.Current as App)?.DataProvider.DeleteProducer(producer);
         }
 
         private void ClearFilter()
         {
             FilterValue = string.Empty;
             OnPropertyChanged(nameof(FilterValue));
-            FilterKetchup();
+            FilterProducer();
         }
 
-        private void FilterKetchup()
+        private void FilterProducer()
         {
             if (string.IsNullOrEmpty(FilterValue))
             {
-                _producerListCollectionView.Filter = null;
+                Producers = new ObservableCollection<ProducerViewModel>(AllProducers);
             }
             else
             {
-                _producerListCollectionView.Filter = producerViemModel =>
-                    (producerViemModel as ProducerViewModel)?.FilterValue.IndexOf(FilterValue, StringComparison.InvariantCultureIgnoreCase) >= 0;
+                Producers = new ObservableCollection<ProducerViewModel>(AllProducers.Where(p => p.FilterValue.IndexOf(FilterValue, StringComparison.InvariantCultureIgnoreCase) >= 0).ToList());
             }
+            OnPropertyChanged(nameof(Producers));
         }
     }
 }

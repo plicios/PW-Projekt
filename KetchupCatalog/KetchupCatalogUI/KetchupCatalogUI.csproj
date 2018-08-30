@@ -57,11 +57,13 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Command.cs" />
+    <Compile Include="EventList.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\KetchupListViewModel.cs" />
     <Compile Include="ViewModels\KetchupViewModel.cs" />
     <Compile Include="ViewModels\ProducerListViewModel.cs" />
     <Compile Include="ViewModels\ProducerViewModel.cs" />
+    <Compile Include="ViewModels\ViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

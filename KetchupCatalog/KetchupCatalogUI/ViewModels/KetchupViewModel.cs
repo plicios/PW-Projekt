@@ -4,25 +4,27 @@ using System.Collections.ObjectModel;
 using Gorny.KetchupCatalog.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using Gorny.KetchupCatalog.Core;
+using System.Windows;
+using KetchupCatalogUI;
 
 namespace Gorny.KetchupCatalog.KetchupCatalogUI.ViewModels
 {
-    class KetchupViewModel
+    class KetchupViewModel : ViewModel
     {
         public IKetchup Ketchup { get; }
 
-        public ObservableCollection<IProducer> Producers { get; }
+        public ObservableCollection<IProducer> Producers => new ObservableCollection<IProducer>((Application.Current as App)?.DataProvider.Producers ?? new List<IProducer>());
 
-        public KetchupViewModel(IKetchup ketchup, List<IProducer> producers)
+        public KetchupViewModel(IKetchup ketchup)
         {
             Ketchup = ketchup;
-            Producers = new ObservableCollection<IProducer>(producers);
+            Validate();
         }
 
         public string FilterValue => Name + Producer.Name + Type + ManufactureDate;
 
         [Required(ErrorMessage = "Nazwa ketchupu jest wymagana.")]
-        [StringLength(50, MinimumLength = 5, ErrorMessage = "Nazwa musi byc dłuższa niż 3 i krótsza niż 50 znaków.")]
+        [StringLength(50, MinimumLength = 5, ErrorMessage = "Nazwa musi byc dłuższa niż 5 i krótsza niż 50 znaków.")]
         public string Name
         {
             get => Ketchup.Name;
@@ -30,6 +32,7 @@ namespace Gorny.KetchupCatalog.KetchupCatalogUI.ViewModels
             {
                 Ketchup.Name = value;
                 Validate();
+                OnPropertyChanged(nameof(Name));
             }
         }
 
@@ -46,12 +49,12 @@ namespace Gorny.KetchupCatalog.KetchupCatalogUI.ViewModels
                     DateTime date = DateTime.ParseExact(value, "dd-MM-yyyy", null);
                     Ketchup.ManufactureDate = date;
                     Validate();
+                    OnPropertyChanged(nameof(ManufactureDate));
                 }
                 catch (FormatException)
                 {
 
                 }
-
             }
         }
 
@@ -63,6 +66,7 @@ namespace Gorny.KetchupCatalog.KetchupCatalogUI.ViewModels
             {
                 Ketchup.Type = value;
                 Validate();
+                OnPropertyChanged(nameof(Type));
             }
         }
 
@@ -74,12 +78,8 @@ namespace Gorny.KetchupCatalog.KetchupCatalogUI.ViewModels
             {
                 Ketchup.Producer = value;
                 Validate();
+                OnPropertyChanged(nameof(Producer));
             }
-        }
-
-        private void Validate()
-        {
-
         }
     }
 }

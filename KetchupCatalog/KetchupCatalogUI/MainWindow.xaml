@@ -47,13 +47,18 @@
                 <viewModels:KetchupListViewModel/>
             </TabItem.DataContext>
             <DockPanel LastChildFill="True">
-                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Command="{Binding FilterKetchupCommand}" MinWidth="100" >Filter</Button>
-                    <TextBox MinWidth="100" Text="{Binding FilterValue}" ></TextBox>
-                    <Button Command="{Binding ClearFilterKetchupCommand}" MinWidth="120" >Clear filter</Button>
-                    <Button Command="{Binding AddNewKetchupCommand}" MinWidth="120" >Add new Ketchup</Button>
-                    <Button Command="{Binding SaveKetchupCommand}" MinWidth="100" >Save Ketchup</Button>
-                </StackPanel>
+                <DockPanel LastChildFill="True" DockPanel.Dock="Top">
+                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Command="{Binding FilterKetchupCommand}" MinWidth="50" >Filter</Button>
+                        <TextBox MinWidth="100" Text="{Binding FilterValue}" ></TextBox>
+                        <Button Command="{Binding ClearFilterKetchupCommand}" MinWidth="70" >Clear filter</Button>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Command="{Binding AddNewKetchupCommand}" MinWidth="50" >Add</Button>
+                        <Button Command="{Binding SaveKetchupCommand}" MinWidth="50" >Save</Button>
+                        <Button Command="{Binding DeleteKetchupCommand}" MinWidth="50" >Delete</Button>
+                    </StackPanel>
+                </DockPanel>
                 <ListBox MinWidth="220" DockPanel.Dock="Left" Name="PiwoListPanel" ItemsSource="{Binding Ketchups }" DisplayMemberPath="Name" SelectedItem="{Binding SelectedKetchup}" >
                 </ListBox>
                 <Grid Name="BeerDetailsList" DataContext="{Binding SelectedKetchup }">
@@ -90,13 +95,18 @@
                 <viewModels:ProducerListViewModel />
             </TabItem.DataContext>
             <DockPanel LastChildFill="True">
-                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Command="{Binding FilterProducerCommand}" MinWidth="100">Filter</Button>
-                    <TextBox MinWidth="100" Text="{Binding FilterValue}" ></TextBox>
-                    <Button Command="{Binding ClearFilterProducerCommand}" MinWidth="120">Clear filter</Button>
-                    <Button Command="{Binding AddNewProducerCommand}" MinWidth="120" >Add new Producer</Button>
-                    <Button Command="{Binding SaveProducerCommand}" MinWidth="100" >Save Producer</Button>
-                </StackPanel>
+                <DockPanel LastChildFill="True" DockPanel.Dock="Top">
+                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Command="{Binding FilterProducerCommand}" MinWidth="50" >Filter</Button>
+                        <TextBox MinWidth="100" Text="{Binding FilterValue}" ></TextBox>
+                        <Button Command="{Binding ClearFilterProducerCommand}" MinWidth="70" >Clear filter</Button>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Command="{Binding AddNewProducerCommand}" MinWidth="50" >Add</Button>
+                        <Button Command="{Binding SaveProducerCommand}" MinWidth="50" >Save</Button>
+                        <Button Command="{Binding DeleteProducerCommand}" MinWidth="50" >Delete</Button>
+                    </StackPanel>
+                </DockPanel>
                 <ListBox MinWidth="220" DockPanel.Dock="Left" Name="ProducerListPanel" ItemsSource="{Binding Producers}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedProducer}" >
                 </ListBox>
                 <Grid Name="ProdDetailsList" DataContext="{Binding SelectedProducer }">

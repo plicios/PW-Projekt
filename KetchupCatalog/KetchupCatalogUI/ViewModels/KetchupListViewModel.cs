@@ -5,15 +5,16 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Data;
 using Gorny.KetchupCatalog.Interfaces;
 using Gorny.KetchupCatalog.KetchupCatalogUI.Annotations;
 using KetchupCatalogUI;
 
 namespace Gorny.KetchupCatalog.KetchupCatalogUI.ViewModels
 {
-    class KetchupListViewModel : INotifyPropertyChanged
+    class KetchupListViewModel : ViewModel
     {
+        public EventList<KetchupViewModel> AllKetchups { get; set; }
+
         public ObservableCollection<KetchupViewModel> Ketchups { get; set; }
 
         private KetchupViewModel _ketchupViewModel;
@@ -28,34 +29,37 @@ namespace Gorny.KetchupCatalog.KetchupCatalogUI.ViewModels
             }
         }
 
-        public Command SaveKetchupCommand => new Command(param => SaveKetchup());
+        public Command SaveKetchupCommand => new Command(_ => SaveKetchup(), _ => CanSaveKetchup());
 
-        public Command AddNewKetchupCommand => new Command(param => AddKetchup());
+        public Command AddNewKetchupCommand => new Command(_ => AddKetchup());
 
-        public Command FilterKetchupCommand => new Command(param => FilterKetchup());
+        public Command FilterKetchupCommand => new Command(_ => FilterKetchup());
 
-        public Command ClearFilterKetchupCommand => new Command(param => ClearFilter());
+        public Command ClearFilterKetchupCommand => new Command(_ => ClearFilter());
+
+        public Command DeleteKetchupCommand => new Command(_ => DeleteKetchup());
 
         public string FilterValue { get; set; }
-
-        private readonly ListCollectionView _kethupListCollectionView;
 
         public KetchupListViewModel()
         {
             LoadKetchups();
-            _kethupListCollectionView = (ListCollectionView)CollectionViewSource.GetDefaultView(Ketchups);
-
             SelectedKetchup = Ketchups.First();
         }
 
         private void LoadKetchups()
         {
-            Ketchups = new ObservableCollection<KetchupViewModel>();
+            AllKetchups = new EventList<KetchupViewModel>();
+            AllKetchups.ItemsChangedEvent += AllKetchups_ItemsChangedEvent;
             foreach (IKetchup ketchup in (Application.Current as App)?.DataProvider.Ketchups ?? new List<IKetchup>())
             {
-                Ketchups.Add(new KetchupViewModel(ketchup, (Application.Current as App)?.DataProvider.Producers as List<IProducer>));
+                AllKetchups.Add(new KetchupViewModel(ketchup));
             }
+        }
 
+        private void AllKetchups_ItemsChangedEvent(object sender, EventArgs e)
+        {
+            Ketchups = new ObservableCollection<KetchupViewModel>(AllKetchups);
             OnPropertyChanged(nameof(Ketchups));
         }
 
@@ -64,15 +68,19 @@ namespace Gorny.KetchupCatalog.KetchupCatalogUI.ViewModels
             (Application.Current as App)?.DataProvider.SaveKetchup(SelectedKetchup.Ketchup);
             if (!Ketchups.Contains(SelectedKetchup))
             {
-                Ketchups.Add(SelectedKetchup);
+                AllKetchups.Add(SelectedKetchup);
             }
-            OnPropertyChanged(nameof(Ketchups));
+        }
+
+        private bool CanSaveKetchup()
+        {
+            return !SelectedKetchup?.HasErrors ?? false;
         }
 
         private void AddKetchup()
         {
             IKetchup ketchup = (Application.Current as App)?.DataProvider.AddKetchup();
-            SelectedKetchup = new KetchupViewModel(ketchup, (Application.Current as App)?.DataProvider.Producers as List<IProducer>);
+            SelectedKetchup = new KetchupViewModel(ketchup);
             OnPropertyChanged(nameof(SelectedKetchup));
         }
 
@@ -83,25 +91,27 @@ namespace Gorny.KetchupCatalog.KetchupCatalogUI.ViewModels
             FilterKetchup();
         }
 
+        private void DeleteKetchup()
+        {
+            IKetchup ketchup = SelectedKetchup.Ketchup;
+            if (Ketchups.Contains(SelectedKetchup))
+            {
+                AllKetchups.Remove(SelectedKetchup);
+            }
+            (Application.Current as App)?.DataProvider.DeleteKetchup(ketchup);
+        }
+
         private void FilterKetchup()
         {
             if (string.IsNullOrEmpty(FilterValue))
             {
-                _kethupListCollectionView.Filter = null;
+                Ketchups = new ObservableCollection<KetchupViewModel>(AllKetchups);
             }
             else
             {
-                _kethupListCollectionView.Filter = ketchupViewModel =>
-                    (ketchupViewModel as KetchupViewModel)?.FilterValue.IndexOf(FilterValue, StringComparison.InvariantCultureIgnoreCase) >= 0;
+                Ketchups = new ObservableCollection<KetchupViewModel>(AllKetchups.Where(p => p.FilterValue.IndexOf(FilterValue, StringComparison.InvariantCultureIgnoreCase) >= 0).ToList());
             }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            OnPropertyChanged(nameof(Ketchups));
         }
     }
 }

@@ -45,5 +45,15 @@ namespace Gorny.KetchupCatalog.BLC
         {
             _dao.SaveProducer(producer, index);
         }
+
+        public void DeleteKetchup(IKetchup ketchup)
+        {
+            _dao.DeleteKetchup(ketchup);
+        }
+
+        public void DeleteProducer(IProducer producer)
+        {
+            _dao.DeleteProducer(producer);
+        }
     }
 }

@@ -68,5 +68,21 @@ namespace Gorny.KetchupCatalog.DAOMock2
                 _producers.Add(producer);
             }
         }
+
+        public void DeleteKetchup(IKetchup ketchup)
+        {
+            if (_ketchups.Contains(ketchup))
+            {
+                _ketchups.Remove(ketchup);
+            }
+        }
+
+        public void DeleteProducer(IProducer producer)
+        {
+            if (_producers.Contains(producer))
+            {
+                _producers.Remove(producer);
+            }
+        }
     }
 }
