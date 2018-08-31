@@ -60,3 +60,18 @@ KetchupCatalog/Interfaces/obj/Release/
 KetchupCatalog/KetchupCatalogUI/obj/Release/
 
 KetchupCatalog/KetchupCatalogUI/bin/Debug/
+
+KetchupCatalog/DaoDatabase/bin/Debug/
+
+KetchupCatalog/DaoDatabase/bin/Release/
+
+KetchupCatalog/DaoDatabase/obj/Debug/
+
+KetchupCatalog/DaoDatabase/obj/Release/
+
+KetchupCatalog/DaoDatabaseReader/obj/Debug/
+
+KetchupCatalog/KetchupCatalogUI/bin/Release/
+
+KetchupCatalog/packages
+KetchupCatalog/DaoDatabaseReader/

@@ -40,13 +40,13 @@ namespace Gorny.KetchupCatalog.KetchupCatalogUI.ViewModels
         [StringLength(10, MinimumLength = 10, ErrorMessage = "Należy podać datę w formacie \"dd-MM-yyyy\"")]
         public string ManufactureDate
         {
-            get => Ketchup.ManufactureDate.ToString("dd-MM-yyyy");
+            get => Ketchup.ManufactureDate.ToString(Constants.DateFormat);
             set
             {
 
                 try
                 {
-                    DateTime date = DateTime.ParseExact(value, "dd-MM-yyyy", null);
+                    DateTime date = DateTime.ParseExact(value, Constants.DateFormat, null);
                     Ketchup.ManufactureDate = date;
                     Validate();
                     OnPropertyChanged(nameof(ManufactureDate));

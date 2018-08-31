@@ -4,7 +4,7 @@ using Gorny.KetchupCatalog.Interfaces;
 
 namespace Gorny.KetchupCatalog.DAOMock
 {
-    class Ketchup :IKetchup
+    class Ketchup : IKetchup
     {
         public string Name { get; set; }
         public KetchupType Type { get; set; }

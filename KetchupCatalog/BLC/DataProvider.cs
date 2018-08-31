@@ -12,15 +12,15 @@ namespace Gorny.KetchupCatalog.BLC
         public IEnumerable<IKetchup> Ketchups => _dao.GetKetchups();
         public IEnumerable<IProducer> Producers => _dao.GetProducers();
 
-        public DataProvider(string mockName)
+        public DataProvider(string mockOrDatabaseName)
         {
             string dllFolder = "Release";
 #if DEBUG
             dllFolder = "Debug";
 #endif
-            Assembly assembly = Assembly.UnsafeLoadFrom($@"..\..\..\{mockName}\bin\{dllFolder}\{mockName}.dll");
+            Assembly assembly = Assembly.UnsafeLoadFrom($@"..\..\..\{mockOrDatabaseName}\bin\{dllFolder}\{mockOrDatabaseName}.dll");
 
-            Type daoType = assembly.GetType($"Gorny.KetchupCatalog.{mockName}.Dao");
+            Type daoType = assembly.GetType($"Gorny.KetchupCatalog.{mockOrDatabaseName}.Dao");
 
             _dao = Activator.CreateInstance(daoType) as IDao;
         }

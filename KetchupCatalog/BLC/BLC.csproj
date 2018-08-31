@@ -11,6 +11,8 @@
     <AssemblyName>BLC</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,6 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -48,18 +51,13 @@
       <Project>{a7a8a176-58d2-4ab6-af55-fd2ee251580c}</Project>
       <Name>Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DAOMock2\DAOMock2.csproj">
-      <Project>{7a9f025f-34eb-4b6a-9d68-5bf123273278}</Project>
-      <Name>DAOMock2</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DAOMock\DAOMock.csproj">
-      <Project>{1d89378a-01da-4ab1-be1e-60206950668d}</Project>
-      <Name>DAOMock</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Interfaces\Interfaces.csproj">
       <Project>{eb44f606-1b9b-423c-8496-180f81565c1f}</Project>
       <Name>Interfaces</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

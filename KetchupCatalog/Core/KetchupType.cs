@@ -2,9 +2,10 @@
 {
     public enum KetchupType
     {
-        Mild,
-        Spicy,
-        Hot,
-        Pizza
+        Mild = 0,
+        Spicy = 1,
+        Hot = 2,
+        Pizza = 3,
+        WithSpices = 4
     }
 }

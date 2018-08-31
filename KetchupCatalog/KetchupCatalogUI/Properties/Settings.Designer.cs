@@ -25,7 +25,7 @@ namespace Gorny.KetchupCatalog.KetchupCatalogUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("DAOMock")]
+        [global::System.Configuration.DefaultSettingValueAttribute("DaoDatabase")]
         public string Dao {
             get {
                 return ((string)(this["Dao"]));
