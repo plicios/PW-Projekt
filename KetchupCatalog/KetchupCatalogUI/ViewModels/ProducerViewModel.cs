@@ -3,7 +3,7 @@ using Gorny.KetchupCatalog.Interfaces;
 
 namespace Gorny.KetchupCatalog.KetchupCatalogUI.ViewModels
 {
-    class ProducerViewModel : ViewModel
+    public class ProducerViewModel : ViewModel
     {
         public IProducer Producer { get; }
 

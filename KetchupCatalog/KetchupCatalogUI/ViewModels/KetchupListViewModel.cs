@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using Gorny.KetchupCatalog.Interfaces;
-using Gorny.KetchupCatalog.KetchupCatalogUI.Annotations;
-using KetchupCatalogUI;
 
 namespace Gorny.KetchupCatalog.KetchupCatalogUI.ViewModels
 {
-    class KetchupListViewModel : ViewModel
+    public class KetchupListViewModel : ViewModel
     {
         public EventList<KetchupViewModel> AllKetchups { get; set; }
 
@@ -24,6 +20,7 @@ namespace Gorny.KetchupCatalog.KetchupCatalogUI.ViewModels
             get => _ketchupViewModel;
             set
             {
+                (Application.Current as App).SelectedKetchupViewModel = value;
                 _ketchupViewModel = value;
                 OnPropertyChanged(nameof(SelectedKetchup));
             }

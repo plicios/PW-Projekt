@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 
 namespace Gorny.KetchupCatalog.KetchupCatalogUI.ViewModels
 {
-    class ViewModel : INotifyDataErrorInfo, INotifyPropertyChanged
+    public class ViewModel : INotifyDataErrorInfo, INotifyPropertyChanged
     {
 
         protected void Validate()

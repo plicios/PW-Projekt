@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Gorny.KetchupCatalog.KetchupCatalogUI
 {
-    class EventList<T> : List<T>
+    public class EventList<T> : List<T>
     {
         private event EventHandler _itemsChangedEvent;
 
@@ -24,14 +21,8 @@ namespace Gorny.KetchupCatalog.KetchupCatalogUI
 
         public event EventHandler ItemsChangedEvent
         {
-            add
-            {
-                _itemsChangedEvent = value;
-            }
-            remove
-            {
-                _itemsChangedEvent = null;
-            }
+            add => _itemsChangedEvent = value;
+            remove => _itemsChangedEvent = null;
         }
     }
 }

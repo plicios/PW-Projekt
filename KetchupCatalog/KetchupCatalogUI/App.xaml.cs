@@ -1,8 +1,9 @@
 ﻿using System.Windows;
 using Gorny.KetchupCatalog.BLC;
 using Gorny.KetchupCatalog.KetchupCatalogUI.Properties;
+using Gorny.KetchupCatalog.KetchupCatalogUI.ViewModels;
 
-namespace KetchupCatalogUI
+namespace Gorny.KetchupCatalog.KetchupCatalogUI
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -10,6 +11,7 @@ namespace KetchupCatalogUI
     public partial class App : Application
     {
         public DataProvider DataProvider { get; }
+        public KetchupViewModel SelectedKetchupViewModel { get; set; }
 
         public App()
         {

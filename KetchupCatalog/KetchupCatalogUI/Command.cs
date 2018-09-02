@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace Gorny.KetchupCatalog.KetchupCatalogUI
 {
-    class Command : ICommand
+    public class Command : ICommand
     {
         private readonly Action<object> _action;
         private readonly Predicate<object> _canAction;

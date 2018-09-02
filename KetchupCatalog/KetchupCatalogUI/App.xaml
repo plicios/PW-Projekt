@@ -1,7 +1,6 @@
-﻿<Application x:Class="KetchupCatalogUI.App"
+﻿<Application x:Class="Gorny.KetchupCatalog.KetchupCatalogUI.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:KetchupCatalogUI"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          

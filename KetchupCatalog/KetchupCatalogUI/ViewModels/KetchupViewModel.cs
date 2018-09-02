@@ -5,11 +5,10 @@ using Gorny.KetchupCatalog.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using Gorny.KetchupCatalog.Core;
 using System.Windows;
-using KetchupCatalogUI;
 
 namespace Gorny.KetchupCatalog.KetchupCatalogUI.ViewModels
 {
-    class KetchupViewModel : ViewModel
+    public class KetchupViewModel : ViewModel
     {
         public IKetchup Ketchup { get; }
 
@@ -22,6 +21,11 @@ namespace Gorny.KetchupCatalog.KetchupCatalogUI.ViewModels
         }
 
         public string FilterValue => Name + Producer.Name + Type + ManufactureDate;
+
+        public void RefreshProducsers()
+        {
+            OnPropertyChanged(nameof(Producers));
+        }
 
         [Required(ErrorMessage = "Nazwa ketchupu jest wymagana.")]
         [StringLength(50, MinimumLength = 5, ErrorMessage = "Nazwa musi byc dłuższa niż 5 i krótsza niż 50 znaków.")]

@@ -4,11 +4,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using Gorny.KetchupCatalog.Interfaces;
-using KetchupCatalogUI;
 
 namespace Gorny.KetchupCatalog.KetchupCatalogUI.ViewModels
 {
-    class ProducerListViewModel : ViewModel
+    public class ProducerListViewModel : ViewModel
     {
         public EventList<ProducerViewModel> AllProducers { get; set; }
         public ObservableCollection<ProducerViewModel> Producers { get; set; }
@@ -33,7 +32,7 @@ namespace Gorny.KetchupCatalog.KetchupCatalogUI.ViewModels
 
         public Command ClearFilterProducerCommand => new Command(param => ClearFilter());
 
-        public Command DeleteProducerCommand => new Command(param => DeleteProducer());
+        public Command DeleteProducerCommand => new Command(param => DeleteProducer(), _ => CanDeleteProducer());
 
         public string FilterValue { get; set; }
 
@@ -63,17 +62,42 @@ namespace Gorny.KetchupCatalog.KetchupCatalogUI.ViewModels
 
         private void SaveProducer()
         {
-            //TODO refresh current SelectedKetchup
             (Application.Current as App)?.DataProvider.SaveProducer(SelectedProducer.Producer);
             if (!AllProducers.Contains(SelectedProducer))
             {
                 AllProducers.Add(SelectedProducer);
+                (Application.Current as App)?.SelectedKetchupViewModel.RefreshProducsers();
             }
         }
 
         private bool CanSaveProducer()
         {
             return !SelectedProducer?.HasErrors ?? false;
+        }
+
+        private bool _firtsTime = true;
+
+        private bool CanDeleteProducer()
+        {
+            if (_firtsTime)
+            {
+                _firtsTime = false;
+                return true;
+            }
+
+            foreach (IKetchup ketchup in (Application.Current as App)?.DataProvider.Ketchups ?? new List<IKetchup>())
+            {
+                if (ketchup.Producer.Equals(SelectedProducer.Producer))
+                {
+                    MessageBox.Show("Can't delete producer that is used in any ketchup",
+                        "Error",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private void AddProducer()
