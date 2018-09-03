@@ -13,7 +13,7 @@
   <userSettings>
     <Gorny.KetchupCatalog.KetchupCatalogUI.Properties.Settings>
       <setting name="Dao" serializeAs="String">
-        <value>[DllName]</value>
+        <value>DaoDatabase</value>
       </setting>
     </Gorny.KetchupCatalog.KetchupCatalogUI.Properties.Settings>
   </userSettings>
@@ -29,7 +29,7 @@
     </providers>
   </entityFramework>
   <connectionStrings>
-    <add name="KetchupCatalogDatabaseEntities" connectionString="metadata=res://*/KetchupCatalog.csdl|res://*/KetchupCatalog.ssdl|res://*/KetchupCatalog.msl;provider=System.Data.SqlClient;provider connection string='data source=(LocalDB)\MSSQLLocalDB;attachdbfilename=[DatabasePath];integrated security=True;connect timeout=30;MultipleActiveResultSets=True;App=EntityFramework'" providerName="System.Data.EntityClient" />
+    <add name="KetchupCatalogDatabaseEntities" connectionString="metadata=res://*/KetchupCatalog.csdl|res://*/KetchupCatalog.ssdl|res://*/KetchupCatalog.msl;provider=System.Data.SqlClient;provider connection string='data source=(LocalDB)\MSSQLLocalDB;attachdbfilename=D:\Studia\ProgramowanieWizualne\PW-Projekt\KetchupCatalog\DaoDatabase\bin\Debug\KetchupCatalog.mdf;integrated security=True;connect timeout=30;MultipleActiveResultSets=True;App=EntityFramework'" providerName="System.Data.EntityClient" />
   </connectionStrings>
   <system.data>
     <DbProviderFactories>
